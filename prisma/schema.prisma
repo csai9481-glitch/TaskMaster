@@ -121,3 +121,12 @@ model Attachment {
   @@index([taskId])
   @@map("attachments")
 }
+
+model RevokedToken {
+  jti       String   @id @db.VarChar(255)
+  expiresAt DateTime @map("expires_at")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([expiresAt])
+  @@map("revoked_tokens")
+}

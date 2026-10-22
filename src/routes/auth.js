@@ -22,7 +22,12 @@ function issueToken(user) {
   return jwt.sign(
     { sub: user.id },
     process.env.JWT_SECRET,
-    { expiresIn: "2h", issuer: "taskmaster-api", audience: "taskmaster-client" }
+    {
+      jwtid: require("node:crypto").randomUUID(),
+      expiresIn: "2h",
+      issuer: "taskmaster-api",
+      audience: "taskmaster-client"
+    }
   );
 }
 
@@ -149,4 +154,21 @@ router.patch("/me", requireAuth, async (req, res, next) => {
   }
 });
 
+router.post("/logout", requireAuth, async (req, res, next) => {
+  try {
+    await prisma.revokedToken.create({
+      data: {
+        jti: req.authTokenPayload.jti,
+        expiresAt: new Date(req.authTokenPayload.exp * 1000)
+      }
+    });
+
+    return res.json({ message: "Logout successful." });
+  } catch (error) {
+    if (error.code === "P2002") {
+      return res.json({ message: "Logout successful." });
+    }
+    return next(error);
+  }
+});
 module.exports = router;
