@@ -1,0 +1,34 @@
+node_modules
+# Keep environment variables out of version control
+.env
+
+/generated/prisma
+
+# Local environment secrets
+.env
+.env.*
+
+# Uploaded user files
+uploads/*
+!uploads/.gitkeep
+# Dependencies and local environment
+node_modules/
+.env
+.env.*
+!.env.example
+
+# Generated and temporary files
+coverage/
+.nyc_output/
+*.log
+*.bak
+
+# Uploaded files (keep the directory placeholder)
+uploads/*
+!uploads/.gitkeep
+
+# Local editor and operating system files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
